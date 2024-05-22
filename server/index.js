@@ -33,8 +33,6 @@ mongoose.connect(process.env.mongo_URI, connectionOptions)
     });
 
 
-// console.log("Using connection URI:", process.env.mongo_URI);
-// console.log("Connection options:", connectionOptions);
 
 const secret=process.env.secret_key;
 const bcrypt = require('bcrypt');
@@ -108,7 +106,7 @@ app.post('/register', async (req, res) => {
           name, email, password: newpassword, phoneno
       });
       // Log the newly created user
-      console.log("New user created:", newUser);
+      // console.log("New user created:", newUser);
       // Send the newly created user to the client
       res.json(newUser);
   } catch (e) {
@@ -299,7 +297,7 @@ app.post('/bookings', async(req,res) =>{
         
       });
       res.json(newbooking);
-      console.log(newbooking)
+      // console.log(newbooking)
     }
     catch(err)
     {
@@ -384,7 +382,7 @@ app.get('/BookingRequests', async (req, res) => {
       const userData = await getUserDataFromReq(req);
       // console.log('UserData:', userData); // Debug log
       const bookings = await booking.find({ placeOwner: userData.id }).populate('place');
-      console.log('Bookings:', bookings); // Debug log
+      // console.log('Bookings:', bookings); // Debug log
       res.json(bookings);
   } catch (error) {
       console.error('Error:', error); // Debug log
@@ -428,8 +426,8 @@ app.get('/BookingRequests', async (req, res) => {
 app.delete('/places/:id', async (req, res) => {
   const { id } = req.params;
   const requser = await getUserDataFromReq(req);
-  console.log("id is ",id);
-  console.log("user is  ", requser.id);
+  // console.log("id is ",id);
+  // console.log("user is  ", requser.id);
 
   try {
     const placeToDelete = await place.findById(id);
@@ -459,8 +457,8 @@ app.delete('/acounts/myBooking/:id', async (req, res) => {
       // const userId = req.user._id; // Assuming you have user information in req.user from your authentication middleware
       const user = await getUserDataFromReq(req);
       const Booking = await booking.findById(id);
-      console.log("booking id is ",id);
-      console.log("booking done by   ",user);
+      // console.log("booking id is ",id);
+      // console.log("booking done by   ",user);
 
       if (!Booking) {
           return res.status(404).json({ message: 'Booking not found' });
@@ -522,40 +520,7 @@ app.get('/all-places', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-// app.get('/all-places', async (req, res) => {
-//   try {
-//     // Perform the aggregation with $lookup and $match
-//     const places = await place.aggregate([
-//       {
-//         $lookup: {
-//           from: 'User', // Ensure this matches the actual name of your User collection
-//           localField: 'owner', // Ensure this matches the actual field in the Place documents
-//           foreignField: '_id', // Ensure this matches the actual field in the User documents
-//           as: 'userInfo'
-//         }
-//       },
-//       {
-//         $match: {
-//           'userInfo.0': { $exists: true } // Ensure this matches the correct userInfo structure
-//         }
-//       },
-//       {
-//         $project: {
-//           userInfo: 0 // Optionally exclude the userInfo field from the output
-//         }
-//       }
-//     ]);
 
-//     console.log('Fetched places:', places); // Log the fetched places to debug
-//     res.json(places);
-//   } catch (error) {
-//     console.error('Error fetching places:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
-// app.get('/acounts/myAccommodation/new/:id',async  (req,res) =>{
-// app.get('/addingplace/:id',async  (req,res) =>{
   app.get('/acounts/myBooking/:id', async (req, res) => {
     const { id } = req.params;
     try {
@@ -577,93 +542,6 @@ app.get('/places/:id',async  (req,res) =>{
 })
 
 
-// app.put('profile-update/:id', async(req,res)=>{
-//     const id = req.params;
-
-//     const getDetails = await place.findByIdAndUpdate(id,{
-//         // name:req.body.name,
-//         title: req.body.title,
-//         address : req.body.address,
-//         description: req.body.description,
-//         addedphotos : req.body.addedphotos,
-//         perks  : req.body.perks,
-//         extrainfo : req.body.extrainfo,
-//         checkin : req.body.extrainfo,
-//         checkout : req.body.checkout,
-//         maxguest : req.body. maxguest,
-//         price: req.body. price
-        
-//     })
-// })
-
-// app.put('profile-update/:id', async (req, res) => {
-//     const id = req.params.id; // Extract the ID from req.params
-  
-//     try {
-//       const updatedDetails = await place.findByIdAndUpdate(id, {
-//         title: req.body.title,
-//         address: req.body.address,
-//         description: req.body.description,
-//         addedphotos: req.body.addedphotos,
-//         perks: req.body.perks,
-//         extrainfo: req.body.extrainfo,
-//         checkin: req.body.checkin,
-//         checkout: req.body.checkout,
-//         maxguest: req.body.maxguest,
-//         price: req.body.price,
-//       });
-  
-//       // Check if the document was found and updated successfully
-//       if (!updatedDetails) {
-//         return res.status(404).json({ error: "Document not found" });
-//       }
-  
-//       res.status(200).json(updatedDetails);
-//     } catch (error) {
-//       console.error(error);
-//       res.status(500).json({ error: "Internal Server Error" });
-//     }
-//   });
-  
-// const mongoose = require('mongoose');
-// const express = require('express');
-// const place = require('./models/place'); // Import your place model
-
-// const router = express.Router();
-
-// app.put('/profile-update/:id', async (req, res) => {
-//   const { id } = req.params;
-
-//   // Check if ID is valid
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(400).json({ error: "Invalid ID" });
-//   }
-
-//   try {
-//     const updatedDetails = await place.findByIdAndUpdate(id, {
-//       title: req.body.title,
-//       address: req.body.address,
-//       description: req.body.description,
-//       addedphotos: req.body.addedphotos,
-//       perks: req.body.perks,
-//       extrainfo: req.body.extrainfo,
-//       checkin: req.body.checkin,
-//       checkout: req.body.checkout,
-//       maxguest: req.body.maxguest,
-//       price: req.body.price,
-//     }, { new: true });
-
-//     // Check if the document was found and updated successfully
-//     if (!updatedDetails) {
-//       return res.status(404).json({ error: "Document not found" });
-//     }
-
-//     res.status(200).json(updatedDetails);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error", details: error.message });
-//   }
-// });
 
 app.post('/profile-update/:id', async (req, res) => {
     const { id } = req.params;

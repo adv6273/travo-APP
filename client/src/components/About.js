@@ -2,7 +2,7 @@ import React from 'react';
 
 const About = () => {
   return (
-    <div className="h-screen bg-blue-100 flex justify-center items-center">
+    <div className="h-full w-full bg-blue-100 flex  justify-center items-center">
       <div className="max-w-4xl text-center p-10">
         <h1 className="text-4xl font-bold mb-6">About Us</h1>
         <p className="mb-6 text-lg ">
@@ -11,7 +11,7 @@ const About = () => {
         <h2 className="text-2xl font-bold mb-4">Key Features</h2>
         <ul className="mb-6 text-left">
           <li><strong>Add Your Place</strong>: Share your beautiful place with others. Easily add your property details, including photos, descriptions, and availability, to attract potential guests.</li>
-          <li><strong>Delete Your Place</strong>: Manage your listings effortlessly. If you decide to remove your place from our platform, you can do so with just a few clicks.</li>
+          <li><strong>Modify Your Place</strong>: Manage your listings effortlessly. If you decide to remove/change your place from our platform, you can do so with just a few clicks.</li>
           <li><strong>Book Any Place</strong>: Explore a variety of places listed on our website. Find the perfect accommodation that suits your needs and book it instantly.</li>
           <li><strong>Modify Bookings</strong>: Plans change, and we understand that. You can easily  cancel a reservation.</li>
           <li><strong>Manage Booking Requests</strong>: If you have listed a place and received booking requests, you have full control over accepting or deleting those requests.</li>

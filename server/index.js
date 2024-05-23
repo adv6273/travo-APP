@@ -543,43 +543,97 @@ app.get('/places/:id',async  (req,res) =>{
 
 
 
-app.post('/profile-update/:id', async (req, res) => {
-    const { id } = req.params;
+// app.post('/profile-update/:id', async (req, res) => {
+//     const { id } = req.params;
   
-    // Check if ID is valid
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ error: "Invalid ID" });
-    }
+//     // Check if ID is valid
+//     if (!mongoose.Types.ObjectId.isValid(id)) {
+//       return res.status(400).json({ error: "Invalid ID" });
+//     }
   
-    try {
-      const updatedDetails = await place.findByIdAndUpdate(id, {
-        title: req.body.title,
-        address: req.body.address,
-        description: req.body.description,
-        addedphotos: req.body.addedphotos,
-        perks: req.body.perks,
-        extrainfo: req.body.extrainfo,
-        checkin: req.body.checkin,
-        checkout: req.body.checkout,
-        maxguest: req.body.maxguest,
-        price: req.body.price,
-      }, { new: true });
+//     try {
+//       const updatedDetails = await place.findByIdAndUpdate(id, {
+//         title: req.body.title,
+//         address: req.body.address,
+//         description: req.body.description,
+//         addedphotos: req.body.addedphotos,
+//         perks: req.body.perks,
+//         extrainfo: req.body.extrainfo,
+//         checkin: req.body.checkin,
+//         checkout: req.body.checkout,
+//         maxguest: req.body.maxguest,
+//         price: req.body.price,
+//       }, { new: true });
   
-      // Check if the document was found and updated successfully
-      if (!updatedDetails) {
-        return res.status(404).json({ error: "Document not found" });
-      }
+//       // Check if the document was found and updated successfully
+//       if (!updatedDetails) {
+//         return res.status(404).json({ error: "Document not found" });
+//       }
   
-      res.status(200).json(updatedDetails);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error", details: error.message });
-    }
-  });
+//       res.status(200).json(updatedDetails);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: "Internal Server Error", details: error.message });
+//     }
+//   });
+
 
 // module.exports = router;
 
+app.post('/profile-update/:id', async (req, res) => {
+  const { id } = req.params;
 
+  // Check if ID is valid
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "Invalid ID" });
+  }
+
+  // Log the received data for debugging
+  // console.log("Received Data:", req.body);
+
+  try {
+    const updatedDetails = await place.findByIdAndUpdate(id, {
+      title: req.body.title,
+      address: req.body.address,
+      description: req.body.description,
+      photos: req.body.addedphotos, // Ensure this matches the schema type
+      perks: req.body.perks,
+      extrainfo: req.body.extrainfo,
+      checkin: req.body.checkin,
+      checkout: req.body.checkout,
+      maxguest: req.body.maxguest,
+      price: req.body.price,
+    }, { new: true });
+
+    // Check if the document was found and updated successfully
+    if (!updatedDetails) {
+      return res.status(404).json({ error: "Document not found" });
+    }
+
+    res.status(200).json(updatedDetails);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error", details: error.message });
+  }
+});
+
+app.delete('/places/:id/photos/:photo', async (req, res) => {
+  try {
+    const { id, photo } = req.params;
+    const place = await Place.findById(id);
+    
+    if (!place) {
+      return res.status(404).json({ message: 'Place not found' });
+    }
+
+    place.photos = place.photos.filter(p => p !== photo);
+    await place.save();
+
+    res.json({ message: 'Photo deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting photo', error: err });
+  }
+});
 
 
 

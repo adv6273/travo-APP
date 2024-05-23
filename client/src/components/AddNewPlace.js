@@ -4,17 +4,17 @@ import axios from "axios";
 
 
 export default function AddNewPlace() {
-  const [title, settitle] = useState("ttle");
-  const [address, setaddress] = useState("old delhi, delhi");
-  const [description, setdescription] = useState(" const navigate = useNavigate(); const navigate = useNavigate(); const navigate = useNavigate();");
+  const [title, settitle] = useState("");
+  const [address, setaddress] = useState("");
+  const [description, setdescription] = useState(" ");
   const [addedphotos, setaddedphotos] = useState([]);
   const [photolink, setphotolink] = useState("");
   const [perks, setperks] = useState([]);
-  const [extrainfo, setextrainfo] = useState(" const navigate = useNavigate();");
-  const [checkin, setcheckin] = useState(1000);
-  const [checkout, setcheckout] = useState(1300);
-  const [maxguest, setmaxguest] = useState(5);
-  const [price, setprice] = useState(100);
+  const [extrainfo, setextrainfo] = useState(" ");
+  const [checkin, setcheckin] = useState();
+  const [checkout, setcheckout] = useState();
+  const [maxguest, setmaxguest] = useState();
+  const [price, setprice] = useState();
   const {id}=useParams();
   const handleCheckboxChange = (e) => {
     const perkValue = e.target.value;
